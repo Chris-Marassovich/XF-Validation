@@ -1,9 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:XFValidationApp1.Converters"
+             xmlns:behaviours="clr-namespace:XFValidationApp1.Behaviours"
              x:Class="XFValidationApp1.Views.NewItemPage"
              Title="New Item">
-    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked">
             <ToolbarItem.Icon>
@@ -22,11 +28,24 @@
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Text" FontSize="Medium" />
-            <Entry Text="{Binding Item.Text}" FontSize="Small" />
-            <Label Text="Description" FontSize="Medium" />
-            <Editor Text="{Binding Item.Description}" FontSize="Small" Margin="0" />
+        <StackLayout Spacing="20"
+                     Padding="15">
+            <Label Text="Text"
+                   FontSize="Medium" />
+            <Entry Text="{Binding ItemText.Value, Mode=TwoWay}"
+                   FontSize="Small">
+                <Entry.Behaviors>
+                    <behaviours:EventToCommandBehavior EventName="TextChanged"
+                                                       Command="{Binding ValidateItemTextCommand}" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="{Binding ItemText.Errors, Converter={StaticResource FirstValidationErrorConverter}}" 
+                   TextColor="Red"/>
+            <Label Text="Description"
+                   FontSize="Medium" />
+            <Editor Text="{Binding Item.Description}"
+                    FontSize="Small"
+                    Margin="0" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

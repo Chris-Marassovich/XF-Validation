@@ -13,8 +13,8 @@ namespace XFValidationApp1.Views
     public partial class NewItemPage : ContentPage
     {
         public Item Item { get; set; }
-        private ValidatableObject<string> itemText = new ValidatableObject<string>();
 
+        private ValidatableObject<string> itemText = new ValidatableObject<string>();
         public ValidatableObject<string> ItemText
         {
             get { return itemText; }
@@ -35,6 +35,7 @@ namespace XFValidationApp1.Views
                 Text = "Item name",
                 Description = "This is an item description."
             };
+
             itemText.Validations.Add(new IsNotNullOrEmptyRule<string>
             {
                 ValidationMessage = "Item Text cannot be null."
